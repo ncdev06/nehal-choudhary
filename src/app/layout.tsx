@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import { Fraunces, JetBrains_Mono, Sora } from "next/font/google";
-import { MouseGlow, ScrollProgress } from "@/components/Effects";
+import type { ReactNode } from "react";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { ScrollProgress } from "@/components/Effects";
 import { Nav } from "@/components/Nav";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-});
-
-const sora = Sora({
-  variable: "--font-sora",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -21,29 +17,24 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Nehal Choudhary — Software & ML",
+    default: "Nehal Choudhary · Software Engineer & Applied ML",
     template: "%s · Nehal Choudhary",
   },
   description:
-    "Portfolio of Nehal Choudhary — UCSD Math-CS & CogSci-ML student building full-stack systems and machine learning products.",
+    "Nehal Choudhary is a UC San Diego Math–CS and Cognitive Science–ML student building reliable software systems, AI-powered developer tools, and applied machine-learning products.",
   openGraph: {
-    title: "Nehal Choudhary — Software & ML",
+    title: "Nehal Choudhary · Software Engineer & Applied ML",
     description:
-      "Full-stack systems, LLM tooling, and applied ML — projects, experience, and resumes.",
+      "Selected software engineering and applied ML work, experience, and projects.",
     type: "website",
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${fraunces.variable} ${sora.variable} ${jetbrains.variable} h-full antialiased`}
-    >
-      <body className="relative min-h-full flex flex-col font-sans text-ink">
-        <div className="noise" aria-hidden />
+    <html lang="en" className={`${inter.variable} ${jetbrains.variable} h-full antialiased`}>
+      <body className="relative flex min-h-full flex-col font-sans text-ink">
         <ScrollProgress />
-        <MouseGlow />
         <Nav />
         <main className="flex-1">{children}</main>
       </body>
