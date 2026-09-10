@@ -1,145 +1,92 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import type { MouseEvent } from "react";
-import { ArrowDownRight, Sparkles } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowDownRight, ArrowUpRight, FileText, Github } from "lucide-react";
 import { site } from "@/data/site";
 
-function SplitName({ name }: { name: string }) {
-  const reduce = useReducedMotion();
-  const parts = name.split(" ");
-
-  return (
-    <h1 className="font-[family-name:var(--font-display)] text-[clamp(3.2rem,11vw,7.2rem)] leading-[0.92] tracking-[-0.03em] text-ink">
-      {parts.map((word, wi) => (
-        <span key={word} className="inline-block whitespace-nowrap">
-          {word.split("").map((char, i) => (
-            <motion.span
-              key={`${word}-${i}`}
-              className="inline-block"
-              initial={reduce ? false : { opacity: 0, y: 36, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{
-                duration: 0.65,
-                delay: 0.18 + wi * 0.12 + i * 0.028,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              {char}
-            </motion.span>
-          ))}
-          {wi < parts.length - 1 ? <span className="inline-block">&nbsp;</span> : null}
-        </span>
-      ))}
-    </h1>
-  );
-}
+const stats = [
+  { value: "80%+", label: "manual effort reduced" },
+  { value: "32+", label: "devices scheduled concurrently" },
+  { value: "3×", label: "hackathon podium finishes" },
+];
 
 export function Hero() {
   const reduce = useReducedMotion();
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${mx}px ${my}px, rgba(255,255,255,0.28), transparent 55%)`;
-
-  const onMove = (e: MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mx.set(e.clientX - rect.left);
-    my.set(e.clientY - rect.top);
-  };
 
   return (
-    <section onMouseMove={onMove} className="relative min-h-[100svh] overflow-hidden mesh">
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70 mix-blend-soft-light"
-        style={{ background: spotlight }}
-      />
-
-      <div className="orb left-[-8%] top-[18%] h-64 w-64 bg-lilac/70" />
-      <div className="orb orb-delayed right-[-4%] top-[42%] h-72 w-72 bg-lavender/50" />
-      <div
-        className="orb left-[35%] top-[8%] h-40 w-40 bg-lavender-mist/80"
-        style={{ animationDelay: "-3s" }}
-      />
-
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {[...Array(12)].map((_, i) => (
-          <span
-            key={i}
-            className="float-dot"
-            style={{
-              left: `${8 + ((i * 17) % 84)}%`,
-              top: `${12 + ((i * 23) % 70)}%`,
-              animationDelay: `${i * 0.4}s`,
-              animationDuration: `${7 + (i % 5)}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40"
-        style={{ background: "linear-gradient(to top, var(--bg), transparent)" }}
-      />
-
-      <div className="section-pad relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end pb-16 pt-28 md:pb-20 md:pt-32">
-        <motion.p
-          initial={reduce ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-[var(--line)] bg-bg-elevated/70 px-3 py-1 text-xs text-ink-soft backdrop-blur"
-        >
-          <motion.span
-            animate={reduce ? undefined : { rotate: [0, 12, -8, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Sparkles size={13} className="text-lavender-deep" />
-          </motion.span>
-          {site.location} · SWE & ML
-        </motion.p>
-
-        <SplitName name={site.name} />
-
+    <section className="mesh relative overflow-hidden border-b border-[var(--line)]">
+      <div className="section-pad mx-auto grid min-h-[92svh] max-w-6xl items-center gap-14 pb-16 pt-28 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 18 }}
+          initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
-          className="mt-7 flex max-w-2xl flex-col gap-6 md:mt-9 md:flex-row md:items-end md:justify-between"
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-base leading-relaxed text-ink-soft md:text-lg">{site.tagline}</p>
-          <div className="flex shrink-0 flex-wrap gap-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-bg-elevated/80 px-3 py-1.5 text-xs font-medium text-ink-soft backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            UC San Diego · {site.education.graduation}
+          </div>
+
+          <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-lavender-deep">
+            Software Engineering · Applied ML
+          </p>
+          <h1 className="mt-4 max-w-4xl text-[clamp(3rem,8vw,6.4rem)] font-semibold leading-[0.96] tracking-[-0.055em] text-ink">
+            Building software that works beyond the demo.
+          </h1>
+          <p className="mt-7 max-w-2xl text-base leading-8 text-ink-soft md:text-lg">
+            I&apos;m {site.name}, a Math–CS and Cognitive Science–ML student at UCSD. I build full-stack systems, AI-powered developer tools, and applied ML products with a focus on reliability, evaluation, and real users.
+          </p>
+
+          <div className="mt-9 flex flex-wrap gap-3">
             <Link href="/#projects" className="btn-primary group">
-              See my work
-              <ArrowDownRight
-                size={16}
-                className="transition group-hover:translate-x-0.5 group-hover:translate-y-0.5"
-              />
+              View selected work
+              <ArrowDownRight size={16} className="transition group-hover:translate-y-0.5" />
             </Link>
-            <Link href="/#contact" className="btn-secondary">
-              Say hello
-            </Link>
+            <a href={site.resumes[0].href} target="_blank" rel="noreferrer" className="btn-secondary">
+              <FileText size={15} /> Resume
+            </a>
+            <a href={site.links.github} target="_blank" rel="noreferrer" className="btn-secondary">
+              <Github size={15} /> GitHub
+            </a>
+          </div>
+
+          <div className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-faint">
+            {['Python', 'TypeScript', 'React', 'FastAPI', 'PyTorch', 'AWS'].map((skill) => (
+              <span key={skill}>{skill}</span>
+            ))}
           </div>
         </motion.div>
 
-        <motion.div
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.85, duration: 0.8 }}
-          className="mt-14 hidden items-center gap-6 text-xs uppercase tracking-[0.18em] text-ink-faint md:flex"
+        <motion.aside
+          initial={reduce ? false : { opacity: 0, x: 28 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.65, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-[1.75rem] border border-[var(--line)] bg-bg-elevated/80 p-6 shadow-[var(--shadow)] backdrop-blur md:p-8"
         >
-          {["UCSD", "EchoStar", "Multimodal AI"].map((label, i) => (
-            <span key={label} className="inline-flex items-center gap-6">
-              {i > 0 && <span className="h-px w-10 bg-lavender/80" />}
-              <motion.span
-                animate={reduce ? undefined : { opacity: [0.55, 1, 0.55] }}
-                transition={{ duration: 3.2, delay: i * 0.4, repeat: Infinity }}
-              >
-                {label}
-              </motion.span>
-            </span>
-          ))}
-        </motion.div>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-faint">At a glance</p>
+              <p className="mt-2 text-lg font-semibold text-ink">Systems + ML, end to end</p>
+            </div>
+            <ArrowUpRight size={20} className="text-lavender-deep" />
+          </div>
+
+          <div className="mt-7 grid gap-3">
+            {stats.map((stat) => (
+              <div key={stat.label} className="rounded-2xl border border-[var(--line)] bg-bg px-5 py-4">
+                <p className="text-3xl font-semibold tracking-tight text-ink">{stat.value}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-soft">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-[var(--line)] bg-[var(--accent-soft)] px-5 py-4">
+            <p className="text-sm font-medium text-ink">Recent work</p>
+            <p className="mt-2 text-sm leading-6 text-ink-soft">
+              Android automation at EchoStar / Boost Mobile, multimodal model evaluation at UCSD, and live recommendation systems built for the web.
+            </p>
+          </div>
+        </motion.aside>
       </div>
     </section>
   );
