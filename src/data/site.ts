@@ -17,7 +17,7 @@ export const site = {
       "B.S. Mathematics–Computer Science",
       "B.S. Cognitive Science–Machine Learning",
     ],
-    graduation: "December 2027",
+    graduation: "2027",
     gpa: "3.9/4.0",
     coursework: [
       "Design & Analysis of Algorithms",
