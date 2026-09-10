@@ -12,14 +12,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <About />
-      <div className="section-pad mx-auto max-w-6xl">
-        <div className="reveal-line" />
-      </div>
       <Projects />
-      <div className="bg-bg-deep/40">
+      <div className="bg-bg-deep/45">
         <Experience />
       </div>
+      <About />
       <Resume />
       <Contact />
       <Footer />
