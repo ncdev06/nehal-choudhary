@@ -1,110 +1,78 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Code2, ExternalLink } from "lucide-react";
-import type { MouseEvent } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  ArrowUpRight,
+  ExternalLink,
+  FileText,
+  Github,
+  Linkedin,
+  Mail,
+} from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
 import { experiences, projects, site, type Project } from "@/data/site";
 
+const featuredSlugs = [
+  "classgraph",
+  "create-similar-playlist",
+  "techtonic",
+  "wildscan",
+  "neural-forecasting",
+  "otterx",
+];
+
+const featuredProjects = featuredSlugs
+  .map((slug) => projects.find((project) => project.slug === slug))
+  .filter((project): project is Project => Boolean(project));
+
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const reduce = useReducedMotion();
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const glow = useMotionTemplate`radial-gradient(280px circle at ${mx}px ${my}px, rgba(168,152,196,0.28), transparent 55%)`;
-
-  const onMove = (e: MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mx.set(e.clientX - rect.left);
-    my.set(e.clientY - rect.top);
-  };
 
   return (
-    <FadeIn delay={0.05 * index}>
+    <FadeIn delay={index * 0.04}>
       <motion.article
-        onMouseMove={onMove}
-        whileHover={reduce ? undefined : { y: -6 }}
-        transition={{ type: "spring", stiffness: 260, damping: 22 }}
-        className="group relative flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated p-6 md:p-7"
+        whileHover={reduce ? undefined : { y: -5 }}
+        transition={{ duration: 0.2 }}
+        className="group flex h-full flex-col rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated p-6 shadow-sm transition hover:border-[var(--accent-line)] hover:shadow-[var(--shadow)] md:p-7"
       >
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ background: glow }}
-        />
-        <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-lavender-mist/50 blur-2xl transition duration-500 group-hover:scale-125 group-hover:bg-lilac/60" />
-
-        <div className="relative flex items-start justify-between gap-3">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              {project.award && <span className="badge-dark">{project.award}</span>}
-              {project.focus.map((f) => (
-                <span
-                  key={f}
-                  className="rounded-full border border-[var(--line)] px-2.5 py-0.5 text-[11px] text-ink-faint"
-                >
-                  {f}
-                </span>
-              ))}
-            </div>
-            <h3 className="mt-3 font-[family-name:var(--font-display)] text-2xl tracking-tight">
-              {project.title}
-            </h3>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-wrap gap-2">
+            {project.award && <span className="badge-dark">{project.award}</span>}
+            {project.focus.map((focus) => (
+              <span key={focus} className="chip">{focus}</span>
+            ))}
           </div>
           <Link
             href={`/projects/${project.slug}`}
-            className="rounded-full border border-[var(--line)] p-2 text-ink-soft transition group-hover:rotate-12 group-hover:border-lavender-deep group-hover:text-ink"
-            aria-label={`Open ${project.title}`}
+            className="rounded-full border border-[var(--line)] p-2 text-ink-soft transition hover:border-[var(--accent-line)] hover:text-ink"
+            aria-label={`View ${project.title}`}
           >
             <ArrowUpRight size={16} />
           </Link>
         </div>
 
-        <p className="relative mt-3 flex-1 text-sm leading-relaxed text-ink-soft">{project.blurb}</p>
+        <h3 className="mt-5 text-2xl font-semibold tracking-[-0.025em] text-ink">{project.title}</h3>
+        <p className="mt-3 flex-1 text-sm leading-7 text-ink-soft">{project.blurb}</p>
 
-        <div className="relative mt-5 flex flex-wrap gap-2">
-          {project.stack.slice(0, 4).map((tech) => (
-            <span key={tech} className="rounded-full bg-bg px-2.5 py-1 text-[11px] text-ink-faint">
-              {tech}
-            </span>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {project.stack.slice(0, 5).map((tech) => (
+            <span key={tech} className="chip">{tech}</span>
           ))}
         </div>
 
-        <div className="relative mt-6 flex flex-wrap gap-3 text-sm">
-          <Link
-            href={`/projects/${project.slug}`}
-            className="font-medium text-lavender-deep underline-offset-4 hover:underline"
-          >
-            Read more
+        <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[var(--line)] pt-5 text-sm">
+          <Link href={`/projects/${project.slug}`} className="font-medium text-ink transition hover:text-lavender-deep">
+            Case study
           </Link>
           {project.links.demo && (
             <a
               href={project.links.demo}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-ink-soft hover:text-ink"
+              className="inline-flex items-center gap-1.5 text-ink-soft transition hover:text-ink"
             >
-              Demo <ExternalLink size={13} />
-            </a>
-          )}
-          {project.links.video && (
-            <a
-              href={project.links.video}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 text-ink-soft hover:text-ink"
-            >
-              Video <ExternalLink size={13} />
-            </a>
-          )}
-          {project.links.competition && (
-            <a
-              href={project.links.competition}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 text-ink-soft hover:text-ink"
-            >
-              Competition <ExternalLink size={13} />
+              Live demo <ExternalLink size={13} />
             </a>
           )}
           {project.links.github && (
@@ -112,9 +80,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               href={project.links.github}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-ink-soft hover:text-ink"
+              className="inline-flex items-center gap-1.5 text-ink-soft transition hover:text-ink"
             >
-              Code <Code2 size={13} />
+              GitHub <Github size={13} />
             </a>
           )}
         </div>
@@ -125,71 +93,52 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export function About() {
   return (
-    <section id="about" className="section-pad mx-auto max-w-6xl py-24 md:py-32">
+    <section id="about" className="section-pad mx-auto max-w-6xl py-24 md:py-28">
       <FadeIn>
-        <p className="text-xs uppercase tracking-[0.2em] text-ink-faint">About</p>
-        <h2 className="mt-3 max-w-3xl font-[family-name:var(--font-display)] text-4xl leading-tight tracking-tight md:text-5xl">
-          I like building things that are{" "}
-          <span className="text-shimmer">useful</span> and a little bit{" "}
-          <span className="text-lavender-deep">clever</span>.
-        </h2>
-      </FadeIn>
-
-      <div className="mt-12 grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:gap-16">
-        <FadeIn delay={0.08}>
-          <div className="space-y-5 text-[1.05rem] leading-relaxed text-ink-soft">
-            <p>
-              I&apos;m {site.name}, studying {site.education.degrees[0]} and{" "}
-              {site.education.degrees[1]} at {site.education.school} (
-              {site.education.gpa} GPA). Day to day, I bounce between full-stack
-              product work and ML — whatever helps ship something people can
-              actually use.
-            </p>
-            <p>
-              Right now that looks like LLM-powered device automation at EchoStar /
-              Boost Mobile, multimodal eval research at UCSD&apos;s Cognitive
-              Development Lab, and hackathon projects where I get to try weird
-              ideas quickly and see what sticks.
+        <p className="eyebrow">Profile</p>
+        <div className="mt-4 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+          <div>
+            <h2 className="max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.04em] text-ink md:text-5xl">
+              Engineering depth with a product mindset.
+            </h2>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-ink-soft">
+              My work sits between software engineering and applied machine learning: backend services, automation platforms, model evaluation, and interactive products. I care about systems that are measurable, maintainable, and useful to the people operating them.
             </p>
           </div>
-        </FadeIn>
 
-        <FadeIn delay={0.16}>
-          <motion.div
-            whileHover={{ y: -4 }}
-            className="rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated p-6 shadow-[var(--shadow)]"
-          >
-            <p className="text-xs uppercase tracking-[0.16em] text-ink-faint">These days</p>
-            <ul className="mt-4 space-y-3 text-sm text-ink-soft">
-              <li className="flex gap-3">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-lavender-deep" />
-                Full-stack tools and platforms
-              </li>
-              <li className="flex gap-3">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-lavender-deep" />
-                LLM eval, agents, and MCP hooks
-              </li>
-              <li className="flex gap-3">
-                <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-lavender-deep" />
-                Multimodal + time-series ML
-              </li>
-            </ul>
-            <div className="reveal-line my-5" />
-            <p className="text-xs uppercase tracking-[0.16em] text-ink-faint">Tools I reach for</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {[...site.skills.languages.slice(0, 5), ...site.skills.frameworks.slice(0, 4)].map(
-                (skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-full border border-[var(--line)] bg-bg px-2.5 py-1 text-xs text-ink-soft transition hover:border-lavender hover:bg-lavender-mist/40"
-                  >
-                    {skill}
-                  </span>
-                ),
-              )}
+          <div className="rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated p-6 md:p-7">
+            <p className="text-sm font-semibold text-ink">{site.education.school}</p>
+            <p className="mt-2 text-sm leading-6 text-ink-soft">
+              {site.education.degrees[0]}<br />
+              {site.education.degrees[1]}
+            </p>
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="metric-card">
+                <p className="metric-label">Graduation</p>
+                <p className="metric-value text-base">{site.education.graduation}</p>
+              </div>
+              <div className="metric-card">
+                <p className="metric-label">GPA</p>
+                <p className="metric-value text-base">{site.education.gpa}</p>
+              </div>
             </div>
-          </motion.div>
-        </FadeIn>
+          </div>
+        </div>
+      </FadeIn>
+
+      <div className="mt-12 grid gap-4 md:grid-cols-3">
+        {[
+          ["Software systems", "Full-stack platforms, APIs, concurrency, automation, testing, and observability."],
+          ["Applied ML", "Model evaluation, multimodal systems, time-series forecasting, ranking, and experimentation."],
+          ["Technical leadership", "Curriculum, mentorship, team coordination, and K–12 computer science outreach."],
+        ].map(([title, description], index) => (
+          <FadeIn key={title} delay={0.05 * index}>
+            <div className="h-full rounded-2xl border border-[var(--line)] bg-bg-elevated p-5">
+              <p className="font-semibold text-ink">{title}</p>
+              <p className="mt-2 text-sm leading-6 text-ink-soft">{description}</p>
+            </div>
+          </FadeIn>
+        ))}
       </div>
     </section>
   );
@@ -199,23 +148,22 @@ export function Projects() {
   return (
     <section id="projects" className="section-pad mx-auto max-w-6xl py-24 md:py-28">
       <FadeIn>
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-ink-faint">Projects</p>
-            <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl tracking-tight md:text-5xl">
-              A few things I&apos;ve shipped
+            <p className="eyebrow">Selected work</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-ink md:text-5xl">
+              Projects built to be used.
             </h2>
           </div>
-          <p className="max-w-sm text-sm text-ink-soft">
-            Mix of SWE and ML. Click through for demos, notes, and a bit of the
-            code behind each one.
+          <p className="max-w-md text-sm leading-7 text-ink-soft">
+            Live products, ML systems, and engineering projects with measurable outcomes. Open a case study for implementation details and my contribution.
           </p>
         </div>
       </FadeIn>
 
       <div className="mt-12 grid gap-5 md:grid-cols-2">
-        {projects.map((project, i) => (
-          <ProjectCard key={project.slug} project={project} index={i} />
+        {featuredProjects.map((project, index) => (
+          <ProjectCard key={project.slug} project={project} index={index} />
         ))}
       </div>
     </section>
@@ -226,47 +174,35 @@ export function Experience() {
   return (
     <section id="experience" className="section-pad mx-auto max-w-6xl py-24 md:py-28">
       <FadeIn>
-        <p className="text-xs uppercase tracking-[0.2em] text-ink-faint">Experience</p>
-        <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl tracking-tight md:text-5xl">
-          Where I&apos;ve been lately
+        <p className="eyebrow">Experience</p>
+        <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-ink md:text-5xl">
+          Building, evaluating, and leading.
         </h2>
       </FadeIn>
 
-      <div className="mt-12 space-y-0">
-        {experiences.map((job, i) => (
-          <FadeIn key={job.id} delay={0.05 * i}>
-            <motion.article
-              whileHover={{ x: 4 }}
-              className="grid gap-4 border-t border-[var(--line)] py-8 md:grid-cols-[220px_1fr] md:gap-10"
-            >
+      <div className="mt-12 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+        {experiences.map((job, index) => (
+          <FadeIn key={job.id} delay={index * 0.04}>
+            <article className="grid gap-5 py-8 md:grid-cols-[220px_1fr] md:gap-10">
               <div>
                 <p className="text-sm text-ink-faint">{job.period}</p>
-                <p className="mt-2 font-medium text-ink">{job.org}</p>
+                <p className="mt-2 text-sm font-semibold text-ink">{job.org}</p>
               </div>
               <div>
-                <h3 className="font-[family-name:var(--font-display)] text-2xl tracking-tight">
-                  {job.role}
-                </h3>
-                <ul className="mt-4 space-y-3 text-sm leading-relaxed text-ink-soft">
-                  {job.highlights.map((item) => (
-                    <li key={item} className="flex gap-3">
-                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-lavender" />
-                      <span>{item}</span>
+                <h3 className="text-xl font-semibold tracking-tight text-ink md:text-2xl">{job.role}</h3>
+                <ul className="mt-4 space-y-3">
+                  {job.highlights.map((highlight) => (
+                    <li key={highlight} className="flex gap-3 text-sm leading-7 text-ink-soft">
+                      <span className="mt-[0.7rem] h-1.5 w-1.5 shrink-0 rounded-full bg-lavender-deep" />
+                      <span>{highlight}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {job.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-[var(--line)] px-2.5 py-1 text-[11px] text-ink-faint"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {job.tags.map((tag) => <span key={tag} className="chip">{tag}</span>)}
                 </div>
               </div>
-            </motion.article>
+            </article>
           </FadeIn>
         ))}
       </div>
@@ -275,39 +211,21 @@ export function Experience() {
 }
 
 export function Resume() {
+  const resume = site.resumes[0];
   return (
-    <section id="resume" className="section-pad mx-auto max-w-6xl py-24 md:py-28">
+    <section id="resume" className="section-pad mx-auto max-w-6xl py-20 md:py-24">
       <FadeIn>
-        <div className="relative overflow-hidden rounded-[2rem] border border-[var(--line)] bg-gradient-to-br from-bg-elevated via-lavender-mist/40 to-bg-deep p-8 shadow-[var(--shadow)] md:p-12">
-          <div className="pointer-events-none absolute -right-16 top-0 h-48 w-48 animate-[drift_12s_ease-in-out_infinite] rounded-full bg-lilac/40 blur-3xl" />
-          <p className="text-xs uppercase tracking-[0.2em] text-ink-faint">Resume</p>
-          <h2 className="mt-3 max-w-xl font-[family-name:var(--font-display)] text-4xl tracking-tight md:text-5xl">
-            The short version
-          </h2>
-          <p className="mt-4 max-w-lg text-ink-soft">
-            One cohesive resume covering SWE, ML, research, and outreach.
-          </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-1 sm:max-w-md">
-            {site.resumes.map((resume) => (
-              <motion.a
-                key={resume.href}
-                href={resume.href}
-                target="_blank"
-                rel="noreferrer"
-                whileHover={{ y: -3, scale: 1.01 }}
-                className="group flex items-center justify-between rounded-2xl border border-[var(--line)] bg-bg-elevated/90 px-5 py-5 transition hover:border-lavender-deep"
-              >
-                <div>
-                  <p className="font-medium text-ink">{resume.label}</p>
-                  <p className="mt-1 text-sm text-ink-soft">{resume.description}</p>
-                </div>
-                <ArrowUpRight
-                  size={18}
-                  className="text-ink-faint transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-lavender-deep"
-                />
-              </motion.a>
-            ))}
+        <div className="rounded-[1.75rem] border border-[var(--accent-line)] bg-[var(--accent-soft)] p-7 md:flex md:items-center md:justify-between md:gap-10 md:p-10">
+          <div>
+            <p className="eyebrow">Resume</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.035em] text-ink md:text-4xl">
+              Prefer the one-page version?
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-7 text-ink-soft">{resume.description}.</p>
           </div>
+          <a href={resume.href} target="_blank" rel="noreferrer" className="btn-primary mt-6 shrink-0 md:mt-0">
+            <FileText size={16} /> Open resume
+          </a>
         </div>
       </FadeIn>
     </section>
@@ -316,47 +234,22 @@ export function Resume() {
 
 export function Contact() {
   return (
-    <section id="contact" className="section-pad mx-auto max-w-6xl py-24 md:py-32">
+    <section id="contact" className="section-pad mx-auto max-w-6xl py-24 md:py-28">
       <FadeIn>
-        <p className="text-xs uppercase tracking-[0.2em] text-ink-faint">Contact</p>
-        <h2 className="mt-3 font-[family-name:var(--font-display)] text-4xl tracking-tight md:text-5xl">
-          Want to chat?
-        </h2>
-        <p className="mt-4 max-w-xl text-ink-soft">
-          Always down to talk internships, research, or just cool systems problems —
-          SWE, ML, or somewhere in between.
-        </p>
-      </FadeIn>
+        <div className="max-w-3xl">
+          <p className="eyebrow">Contact</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-ink md:text-5xl">
+            Let&apos;s connect.
+          </h2>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-ink-soft">
+            I&apos;m interested in software engineering and applied ML opportunities where I can build reliable systems, work close to real users, and learn from strong engineering teams.
+          </p>
+        </div>
 
-      <FadeIn delay={0.1}>
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-          <a href={`mailto:${site.email}`} className="btn-primary justify-center">
-            {site.email}
-          </a>
-          <a
-            href={site.links.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-secondary justify-center"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={site.links.github}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-secondary justify-center"
-          >
-            GitHub
-          </a>
-          <a
-            href={site.links.devpost}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-secondary justify-center"
-          >
-            Devpost
-          </a>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a href={`mailto:${site.email}`} className="btn-primary"><Mail size={15} /> Email</a>
+          <a href={site.links.linkedin} target="_blank" rel="noreferrer" className="btn-secondary"><Linkedin size={15} /> LinkedIn</a>
+          <a href={site.links.github} target="_blank" rel="noreferrer" className="btn-secondary"><Github size={15} /> GitHub</a>
         </div>
       </FadeIn>
     </section>
@@ -366,13 +259,9 @@ export function Contact() {
 export function Footer() {
   return (
     <footer className="section-pad border-t border-[var(--line)] py-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 text-sm text-ink-faint sm:flex-row sm:items-center sm:justify-between">
-        <p>
-          © {new Date().getFullYear()} {site.name}
-        </p>
-        <p className="font-[family-name:var(--font-display)] italic text-ink-soft">
-          thanks for stopping by
-        </p>
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 text-xs text-ink-faint sm:flex-row sm:items-center sm:justify-between">
+        <p>© 2026 Nehal Choudhary</p>
+        <p>Software engineering · Applied ML · San Diego, CA</p>
       </div>
     </footer>
   );
