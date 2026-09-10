@@ -1,0 +1,157 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-6pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-2pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-6pt}}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge \scshape Nehal Choudhary} \\ \vspace{1pt}
+    \small
+    (720) 377-5333 $|$
+    \href{mailto:nechoudhary@ucsd.edu}{\underline{nechoudhary@ucsd.edu}} $|$
+    \href{https://github.com/ncdev06}{\underline{github.com/ncdev06}} $|$
+    \href{https://www.linkedin.com/in/nehal-choudhary-7a3516202/}{\underline{linkedin.com/in/nehal-choudhary-7a3516202/}}
+\end{center}
+
+\section{Education}
+\resumeSubHeadingListStart
+    \resumeSubheading
+      {University of California San Diego}{2027}
+      {B.S. Mathematics-Computer Science, B.S. Cognitive Science-Machine Learning}{GPA: 3.9/4.0}
+    \resumeItemListStart
+        \resumeItem{Relevant Coursework: Design \& Analysis of Algorithms, Advanced Data Structures, Mathematics of Machine Learning, Systems Programming, Probability, Linear Algebra}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+\section{Experience}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{AI \& ML Device Engineering Intern} $|$ \emph{EchoStar / Boost Mobile}}
+      {June 2026 - August 2026}
+    \resumeItemListStart
+        \resumeItem{\textbf{Built an AI-powered Android test automation platform} using Python, FastAPI, React/TypeScript, Appium, and Claude Sonnet via Amazon Bedrock, converting plain-English telecom tests into reusable workflows and reducing manual testing effort by \textbf{80\%+}.}
+        \resumeItem{\textbf{Engineered an MCP-based planning and validation layer} connecting Claude Sonnet with device-control tools to generate, validate, and cache reusable automation flows across Android devices and chipset variations.}
+        \resumeItem{\textbf{Scaled concurrent scheduling and observability across 32+ phones and 110+ test scenarios}, adding conflict handling, disconnect recovery, and step-level diagnostics; uncovered a critical \textbf{Samsung-to-Samsung RTT defect} and earned \textbf{2nd place} at EchoStar's AI Demo Fair.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{Undergraduate Researcher, Multimodal AI} $|$ \emph{UCSD Cognitive Development Lab}}
+      {December 2025 - June 2026}
+    \resumeItemListStart
+        \resumeItem{\textbf{Developed a reusable Python evaluation pipeline} for Whisper and YOLOv8 across \textbf{12 infant-caregiver recordings}, standardizing preprocessing, metric computation, experiment tracking, and result logging.}
+        \resumeItem{\textbf{Benchmarked Whisper on 2,665 multilingual speech segments and YOLOv8 across 10 video sessions}, identifying language-specific ASR failures and achieving \textbf{0.912 mean face-detection precision}.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{LLM Evaluation Intern} $|$ \emph{Netcracker Technology}}
+      {July 2025 - September 2025}
+    \resumeItemListStart
+        \resumeItem{\textbf{Built an automated LLM evaluation framework} covering \textbf{120+ test scenarios across 6 reliability metrics}, replacing manual prompt reviews with repeatable benchmarking and regression testing.}
+        \resumeItem{\textbf{Ran A/B experiments across 20+ prompt variants} to diagnose hallucination, scope drift, and schema instability, translating results into prompt-engineering and model-selection recommendations.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+\section{Projects}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+      {\textbf{\href{https://github.com/ncdev06/classgraph}{ClassGraph, 1st Place}} \emph{React · Go · Python · D3}}
+      {}
+    \resumeItemListStart
+        \resumeItem{\textbf{Modeled 1,000+ UCSD courses and 100+ prerequisite chains as directed graphs}, implementing recursive prerequisite traversal and validation for complex dependency structures.}
+        \resumeItem{\textbf{Built academic-history PDF uploads, course search, OR-grouped requirements, and duplicate-node handling}, improving prerequisite-graph correctness and usability.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{\href{https://github.com/ncdev06/create-similar-playlist}{Create Similar Playlist}} \emph{Python · Streamlit · Last.fm API · Spotify API}}
+      {}
+    \resumeItemListStart
+        \resumeItem{\textbf{Built a hybrid music recommendation pipeline} combining Last.fm collaborative similarity, multi-seed reciprocal-rank fusion, and \textbf{TF-IDF/cosine tag similarity} to rank candidates across 1--8 seed tracks.}
+        \resumeItem{\textbf{Implemented MMR-style diversity reranking and Spotify integrations} for playlist import/export, track previews, matching, and configurable per-artist constraints in a deployed Streamlit application.}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+      {\textbf{\href{https://github.com/ncdev06/WildScan}{WildScan, 2nd Place}} \emph{Python · PyTorch · FastAPI · React}}
+      {}
+    \resumeItemListStart
+        \resumeItem{\textbf{Built a multimodal React/FastAPI application} routing image and audio uploads across specialized wildlife classifiers and returning species identifications with LLM-generated threat guidance.}
+        \resumeItem{\textbf{Trained and evaluated five CNN classifiers} using ResNet, EfficientNet, ConvNeXt, and audio CNN architectures, achieving \textbf{71--90\% test accuracy} and \textbf{100--300 ms image latency}.}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+\section{Skills and Tools}
+\begin{itemize}[leftmargin=0.15in, label={}]
+\small{\item{
+    \textbf{Languages}{: Python, C++, Java, SQL, JavaScript/TypeScript, Go} \\[4pt]
+    \textbf{ML \& AI}{: PyTorch, scikit-learn, Model Evaluation, CNNs, LSTM/GRU/TCN, YOLOv8, Whisper, Claude Sonnet, Amazon Bedrock} \\[4pt]
+    \textbf{Frameworks \& APIs}{: FastAPI, React, Streamlit, REST APIs, pandas, NumPy} \\[4pt]
+    \textbf{Infrastructure}{: Docker, AWS, MongoDB, Git, Appium, ADB, Model Context Protocol (MCP), Hugging Face Spaces}
+}}
+\end{itemize}
+
+\end{document}
