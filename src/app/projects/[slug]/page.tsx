@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft, Code2, ExternalLink } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
 import { Footer } from "@/components/Sections";
 import { getProject, projects } from "@/data/site";
@@ -60,7 +60,7 @@ export default async function ProjectPage({ params }: Props) {
             )}
             {project.links.github && (
               <a href={project.links.github} target="_blank" rel="noreferrer" className="btn-secondary">
-                <Github size={14} /> GitHub
+                <Code2 size={14} /> GitHub
               </a>
             )}
             {project.links.devpost && (
