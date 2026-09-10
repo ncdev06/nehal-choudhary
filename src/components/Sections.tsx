@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import {
-  ArrowUpRight,
-  ExternalLink,
-  FileText,
-  Github,
-  Linkedin,
-  Mail,
-} from "lucide-react";
+import { ArrowUpRight, Code2, ExternalLink, FileText, Mail } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
 import { experiences, projects, site, type Project } from "@/data/site";
 
@@ -82,7 +75,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 text-ink-soft transition hover:text-ink"
             >
-              GitHub <Github size={13} />
+              GitHub <Code2 size={13} />
             </a>
           )}
         </div>
@@ -248,8 +241,8 @@ export function Contact() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a href={`mailto:${site.email}`} className="btn-primary"><Mail size={15} /> Email</a>
-          <a href={site.links.linkedin} target="_blank" rel="noreferrer" className="btn-secondary"><Linkedin size={15} /> LinkedIn</a>
-          <a href={site.links.github} target="_blank" rel="noreferrer" className="btn-secondary"><Github size={15} /> GitHub</a>
+          <a href={site.links.linkedin} target="_blank" rel="noreferrer" className="btn-secondary"><ExternalLink size={15} /> LinkedIn</a>
+          <a href={site.links.github} target="_blank" rel="noreferrer" className="btn-secondary"><Code2 size={15} /> GitHub</a>
         </div>
       </FadeIn>
     </section>
