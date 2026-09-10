@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Code2, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
 import { Footer } from "@/components/Sections";
 import { getProject, projects } from "@/data/site";
@@ -10,13 +10,8 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-function youtubeEmbed(url: string) {
-  const match = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
-  return match ? `https://www.youtube.com/embed/${match[1]}` : null;
-}
-
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,40 +29,28 @@ export default async function ProjectPage({ params }: Props) {
   const project = getProject(slug);
   if (!project) notFound();
 
-  const videoEmbed = project.links.video ? youtubeEmbed(project.links.video) : null;
-
   return (
     <>
       <article className="section-pad mx-auto max-w-5xl pb-20 pt-28 md:pt-32">
         <FadeIn>
-          <Link
-            href="/#projects"
-            className="inline-flex items-center gap-2 text-sm text-ink-soft transition hover:text-ink"
-          >
-            <ArrowLeft size={15} />
-            All projects
+          <Link href="/#projects" className="inline-flex items-center gap-2 text-sm text-ink-soft transition hover:text-ink">
+            <ArrowLeft size={15} /> Back to selected work
           </Link>
-          <div className="mt-8 flex flex-wrap items-center gap-2">
-            {project.award && <span className="badge-dark px-3 py-1 text-xs">{project.award}</span>}
-            {project.focus.map((f) => (
-              <span
-                key={f}
-                className="rounded-full border border-[var(--line)] px-3 py-1 text-xs text-ink-faint"
-              >
-                {f}
-              </span>
-            ))}
+
+          <div className="mt-10 flex flex-wrap items-center gap-2">
+            {project.award && <span className="badge-dark">{project.award}</span>}
+            {project.focus.map((focus) => <span key={focus} className="chip">{focus}</span>)}
           </div>
-          <h1 className="mt-5 font-[family-name:var(--font-display)] text-5xl tracking-tight md:text-6xl">
+
+          <h1 className="mt-5 max-w-4xl text-5xl font-semibold tracking-[-0.05em] text-ink md:text-6xl">
             {project.title}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
-            {project.summary}
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-ink-soft">{project.summary}</p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
             {project.links.demo && (
               <a href={project.links.demo} target="_blank" rel="noreferrer" className="btn-primary">
-                Live demo <ExternalLink size={14} />
+                Open live project <ExternalLink size={14} />
               </a>
             )}
             {project.links.video && (
@@ -75,19 +58,9 @@ export default async function ProjectPage({ params }: Props) {
                 Watch demo <ExternalLink size={14} />
               </a>
             )}
-            {project.links.competition && (
-              <a
-                href={project.links.competition}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-secondary"
-              >
-                Competition <ExternalLink size={14} />
-              </a>
-            )}
             {project.links.github && (
               <a href={project.links.github} target="_blank" rel="noreferrer" className="btn-secondary">
-                <Code2 size={14} /> Repository
+                <Github size={14} /> GitHub
               </a>
             )}
             {project.links.devpost && (
@@ -95,111 +68,50 @@ export default async function ProjectPage({ params }: Props) {
                 Devpost <ExternalLink size={14} />
               </a>
             )}
+            {project.links.competition && (
+              <a href={project.links.competition} target="_blank" rel="noreferrer" className="btn-secondary">
+                Competition <ExternalLink size={14} />
+              </a>
+            )}
           </div>
         </FadeIn>
 
-        {project.links.demo ? (
-          <FadeIn delay={0.1} className="mt-12">
-            <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated shadow-[var(--shadow)]">
-              <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3 text-xs text-ink-faint">
-                <span>Embedded demo</span>
-                <a href={project.links.demo} target="_blank" rel="noreferrer" className="hover:text-ink">
-                  Open fullscreen
-                </a>
-              </div>
-              <iframe
-                src={project.links.demo}
-                title={`${project.title} demo`}
-                className="h-[28rem] w-full bg-white md:h-[34rem]"
-                loading="lazy"
-              />
-            </div>
+        <div className="mt-14 grid gap-5 md:grid-cols-2">
+          <FadeIn>
+            <section className="h-full rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated p-6 md:p-7">
+              <p className="eyebrow">Impact</p>
+              <ul className="mt-5 space-y-4">
+                {project.highlights.map((highlight) => (
+                  <li key={highlight} className="flex gap-3 text-sm leading-7 text-ink-soft">
+                    <span className="mt-[0.7rem] h-1.5 w-1.5 shrink-0 rounded-full bg-lavender-deep" />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
           </FadeIn>
-        ) : videoEmbed ? (
-          <FadeIn delay={0.1} className="mt-12">
-            <div className="overflow-hidden rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated shadow-[var(--shadow)]">
-              <div className="flex items-center justify-between border-b border-[var(--line)] px-4 py-3 text-xs text-ink-faint">
-                <span>Demo video</span>
-                <a href={project.links.video} target="_blank" rel="noreferrer" className="hover:text-ink">
-                  Open on YouTube
-                </a>
+
+          <FadeIn delay={0.06}>
+            <section className="h-full rounded-[1.5rem] border border-[var(--line)] bg-bg-elevated p-6 md:p-7">
+              <p className="eyebrow">My contribution</p>
+              <p className="mt-5 text-sm leading-7 text-ink-soft">{project.contribution}</p>
+              <div className="mt-7 border-t border-[var(--line)] pt-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">Tech</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {project.stack.map((tech) => <span key={tech} className="chip">{tech}</span>)}
+                </div>
               </div>
-              <iframe
-                src={videoEmbed}
-                title={`${project.title} video`}
-                className="aspect-video h-auto w-full bg-black"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            </section>
           </FadeIn>
-        ) : (
-          <FadeIn delay={0.1} className="mt-12">
-            <div className="rounded-[1.5rem] border border-dashed border-lavender-deep/40 bg-lavender-mist/30 px-6 py-10 text-center">
-              <p className="font-[family-name:var(--font-display)] text-xl text-ink">
-                {project.links.competition ? "No live demo" : "Demo placeholder"}
-              </p>
-              <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
-                {project.demoNote ?? "A hosted demo link will go here once available."}
-              </p>
-              {project.links.competition && (
-                <a
-                  href={project.links.competition}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn-secondary mt-5 inline-flex"
-                >
-                  View competition <ExternalLink size={14} />
-                </a>
-              )}
+        </div>
+
+        {!project.links.demo && !project.links.video && project.demoNote && (
+          <FadeIn delay={0.1} className="mt-5">
+            <div className="rounded-2xl border border-[var(--line)] bg-[var(--accent-soft)] px-5 py-4 text-sm leading-6 text-ink-soft">
+              {project.demoNote}
             </div>
           </FadeIn>
         )}
-
-        <div className="mt-14 grid gap-10 md:grid-cols-[1fr_0.9fr]">
-          <FadeIn>
-            <h2 className="font-[family-name:var(--font-display)] text-2xl tracking-tight">
-              Highlights
-            </h2>
-            <ul className="mt-4 space-y-3 text-sm leading-relaxed text-ink-soft">
-              {project.highlights.map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-lavender-deep" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <h2 className="mt-10 font-[family-name:var(--font-display)] text-2xl tracking-tight">
-              My contribution
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">{project.contribution}</p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {project.stack.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-full border border-[var(--line)] bg-bg-elevated px-3 py-1 text-xs text-ink-soft"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </FadeIn>
-
-          {project.codeSnippet && (
-            <FadeIn delay={0.08}>
-              <div className="code-panel">
-                <div className="code-bar">
-                  <span>{project.codeSnippet.filename}</span>
-                  <span>{project.codeSnippet.language}</span>
-                </div>
-                <pre>
-                  <code>{project.codeSnippet.code}</code>
-                </pre>
-              </div>
-            </FadeIn>
-          )}
-        </div>
       </article>
       <Footer />
     </>
