@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDownRight, ArrowUpRight, FileText, Github } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Code2, FileText } from "lucide-react";
 import { site } from "@/data/site";
 
 const stats = [
@@ -46,12 +46,12 @@ export function Hero() {
               <FileText size={15} /> Resume
             </a>
             <a href={site.links.github} target="_blank" rel="noreferrer" className="btn-secondary">
-              <Github size={15} /> GitHub
+              <Code2 size={15} /> GitHub
             </a>
           </div>
 
           <div className="mt-10 flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-faint">
-            {['Python', 'TypeScript', 'React', 'FastAPI', 'PyTorch', 'AWS'].map((skill) => (
+            {["Python", "TypeScript", "React", "FastAPI", "PyTorch", "AWS"].map((skill) => (
               <span key={skill}>{skill}</span>
             ))}
           </div>
